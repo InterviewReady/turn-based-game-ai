@@ -1,5 +1,6 @@
 package game;
 
+import api.RuleEngine;
 import boards.Board;
 
 public class Game {
@@ -9,6 +10,7 @@ public class Game {
     private Integer lastMoveTimeInMillis;
     private Integer maxTimePerPlayer;
     private Integer maxTimePerMove;
+    private RuleEngine ruleEngine = new RuleEngine();
 
     public Game(GameConfig gameConfig, Board board, Player winner, Integer lastMoveTimeInMillis, Integer maxTimePerPlayer, Integer maxTimePerMove) {
         this.gameConfig = gameConfig;
@@ -19,27 +21,24 @@ public class Game {
         this.maxTimePerMove = maxTimePerMove;
     }
 
-    public void move(Move move, int timestampInMillis) {
-        int timeTakenSinceLastMove = timestampInMillis - lastMoveTimeInMillis;
-        move.getPlayer().setTimeTaken(timeTakenSinceLastMove);
-        if (gameConfig.timed) {
-            moveForTimedGame(move, timeTakenSinceLastMove);
-        } else {
-            board.move(move);
+    public void move(Move move, int timeTakenSinceLastMove) {
+        if (winner == null) {
+            move.getPlayer().setTimeTaken(timeTakenSinceLastMove);
+            if (gameConfig.timed) {
+                moveForTimedGame(move, timeTakenSinceLastMove);
+            } else {
+                board = board.move(move);
+            }
+            if (winner == null && ruleEngine.getState(board).isOver()) {
+                winner = move.getPlayer();
+            }
         }
     }
 
     private void moveForTimedGame(Move move, int timeTakenSinceLastMove) {
-        final int currentTime, endTime;
-        if (gameConfig.timePerMove != null) {
-            currentTime = timeTakenSinceLastMove;
-            endTime = maxTimePerMove;
-        } else {
-            currentTime = move.getPlayer().getTimeUsedInMillis();
-            endTime = maxTimePerPlayer;
-        }
-        if (currentTime < endTime) {
-            board.move(move);
+        if (move.getPlayer().getTimeUsedInMillis() < maxTimePerPlayer
+                && (gameConfig.timePerMove == null || timeTakenSinceLastMove < maxTimePerMove)) {
+            board = board.move(move);
         } else {
             winner = move.getPlayer().flip();
         }
@@ -47,5 +46,9 @@ public class Game {
 
     public void setConfig(GameConfig gameConfig) {
         this.gameConfig = gameConfig;
+    }
+
+    public Player getWinner() {
+        return winner;
     }
 }
