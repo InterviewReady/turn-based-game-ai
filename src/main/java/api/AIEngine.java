@@ -3,6 +3,7 @@ package api;
 import boards.Board;
 import boards.TicTacToeBoard;
 import game.*;
+import strategy.StrategyFactory;
 
 public class AIEngine {
 

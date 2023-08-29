@@ -4,6 +4,7 @@ import api.RuleEngine;
 import boards.Board;
 
 public class Game {
+    private final String id;
     private GameConfig gameConfig;
     private Board board;
     Player winner;
@@ -12,7 +13,8 @@ public class Game {
     private Integer maxTimePerMove;
     private RuleEngine ruleEngine = new RuleEngine();
 
-    public Game(GameConfig gameConfig, Board board, Player winner, Integer lastMoveTimeInMillis, Integer maxTimePerPlayer, Integer maxTimePerMove) {
+    public Game(String id, GameConfig gameConfig, Board board, Player winner, Integer lastMoveTimeInMillis, Integer maxTimePerPlayer, Integer maxTimePerMove) {
+        this.id = id;
         this.gameConfig = gameConfig;
         this.board = board;
         this.winner = winner;
@@ -50,5 +52,9 @@ public class Game {
 
     public Player getWinner() {
         return winner;
+    }
+
+    public String id() {
+        return id;
     }
 }

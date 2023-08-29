@@ -1,5 +1,6 @@
-package api;
+package strategy;
 
+import api.RuleEngine;
 import boards.TicTacToeBoard;
 import game.Cell;
 import game.Move;

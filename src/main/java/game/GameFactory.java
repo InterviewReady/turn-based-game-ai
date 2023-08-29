@@ -2,9 +2,11 @@ package game;
 
 import boards.TicTacToeBoard;
 
+import java.util.UUID;
+
 public class GameFactory {
     public Game createGame(Integer maxTimePerMove, Integer maxTimePerPlayer) {
-        return new Game(new GameConfig(maxTimePerPlayer, maxTimePerPlayer!=null),
+        return new Game(UUID.randomUUID().toString(), new GameConfig(maxTimePerPlayer, maxTimePerPlayer!=null),
                 new TicTacToeBoard(),
                 null,
                 0,
@@ -13,7 +15,7 @@ public class GameFactory {
     }
 
     public Game createGame(Integer maxTimePerMove, Integer maxTimePerPlayer, TicTacToeBoard startingBoard){
-        return new Game(new GameConfig(maxTimePerPlayer, maxTimePerPlayer!=null),
+        return new Game(UUID.randomUUID().toString(), new GameConfig(maxTimePerPlayer, maxTimePerPlayer!=null),
                 startingBoard,
                 null,
                 0,
@@ -22,7 +24,7 @@ public class GameFactory {
     }
 
     public Game createGame(int maxTimePerPlayer) {
-        return new Game(new GameConfig(null, true),
+        return new Game(UUID.randomUUID().toString(), new GameConfig(null, true),
                 new TicTacToeBoard(),
                 null,
                 0,
@@ -31,7 +33,7 @@ public class GameFactory {
     }
 
     public Game createGame() {
-        return new Game(new GameConfig(null, false),
+        return new Game(UUID.randomUUID().toString(), new GameConfig(null, false),
                 new TicTacToeBoard(),
                 null,
                 0,

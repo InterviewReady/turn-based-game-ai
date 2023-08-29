@@ -1,4 +1,4 @@
-package api;
+package strategy;
 
 import boards.TicTacToeBoard;
 import game.Cell;
