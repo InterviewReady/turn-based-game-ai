@@ -9,8 +9,5 @@
         <module name="TurnedBasedGameAIEngine" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="TurnedBasedGameAIEngine" target="14" />
-    </bytecodeTargetLevel>
   </component>
 </project>

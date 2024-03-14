@@ -2,9 +2,8 @@ import api.AIEngine;
 import api.GameEngine;
 import api.RuleEngine;
 import boards.Board;
-import commands.builder.EmailCommandBuilder;
-import commands.builder.SMSCommandBuilder;
 import commands.implementations.EmailCommand;
+import commands.implementations.SMSCommand;
 import events.*;
 import game.*;
 import services.EmailService;
@@ -25,10 +24,8 @@ public class Main {
         SMSService smsService = new SMSService();
         Board board = gameEngine.start("TicTacToe");
         EventBus eventBus = new EventBus();
-        eventBus.subscribe(new Subscriber((event ->
-                emailService.send(new EmailCommandBuilder().event(event).build()))));
-        eventBus.subscribe(new Subscriber((event ->
-                smsService.send(new SMSCommandBuilder().event(event).build()))));
+        eventBus.subscribe(new Subscriber((event -> emailService.send(new EmailCommand(event)))));
+        eventBus.subscribe(new Subscriber((event -> smsService.send(new SMSCommand(event)))));
         //make moves in a loop
         int row, col;
         Scanner scanner = new Scanner(System.in);
@@ -37,7 +34,7 @@ public class Main {
         Player computer = new Player("O"), human = new Player("X");
 
         if (human.getUser().activeAfter(10, TimeUnit.DAYS)) {
-            eventBus.publish(new ActivityEvent(human.getUser()));
+            eventBus.publish(new Event(human.getUser(), "Welcome Back!", "https://interviewready.io", "ACTIVITY"));
         }
 
         while (!ruleEngine.getState(board).isOver()) {
@@ -54,7 +51,7 @@ public class Main {
             }
         }
         if (ruleEngine.getState(board).getWinner().equals(human.symbol())) {
-            eventBus.publish(new WinEvent(human.getUser()));
+            eventBus.publish(new Event(human.getUser(), "Congratulations!", "https://interviewready.io/learn", "WIN"));
         }
         System.out.println("GameResult: " + ruleEngine.getState(board));
         System.out.println(board);

@@ -9,6 +9,6 @@ public class EmailService {
     }
 
     public void send(EmailCommand command) {
-        sendEmail(command.getDetails().getReceiver(), command.getDetails().getMessage());
+        sendEmail(command.getReceiver(), command.getMessage());
     }
 }

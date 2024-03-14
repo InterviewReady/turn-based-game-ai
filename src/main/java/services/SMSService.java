@@ -9,6 +9,6 @@ public class SMSService {
     }
 
     public void send(SMSCommand command) {
-        sendSMS(command.getDetails().getReceiver(), command.getDetails().getMessage());
+        sendSMS(command.getReceiver(), command.getMessage());
     }
 }
